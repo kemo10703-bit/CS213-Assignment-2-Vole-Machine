@@ -1,17 +1,13 @@
-#pragma once
-#include<string>
-#include<Memory.h>
-using namespace std;
-class ProgramLoader
-{
-private:
-	string filePath;
+#ifndef PROGRAM_LOADER_H
+#define PROGRAM_LOADER_H
+
+#include <string>
+#include "Memory.h"
+
+class ProgramLoader {
 public:
-	ProgramLoader(string Path);
-
-	bool loadProgram(Memory& memory);
-	bool validateInstruction(string line);
-
-
+    bool loadFromFile(const std::string& fileName, int startAddress, Memory& memory) const;
+    bool validateProgram(const std::string& fileName, int startAddress) const;
 };
 
+#endif

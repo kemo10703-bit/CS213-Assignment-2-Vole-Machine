@@ -22,10 +22,10 @@ Twenty separate input programs for checking the simulator. Each instruction is e
 | program_14_branch_taken.txt | Conditional branch taken | Branch to address 16; halt |
 | program_15_multiple_memory_cells.txt | Store/read two memory cells | R2 = 0C, R3 = 0D; Memory[20] = 0C, Memory[21] = 0D; halted |
 | program_16_float_addition_provisional.txt | Floating-point addition | R3 = 50 with the current ALU implementation; confirm the course's required float format |
-| program_17_add_and_move_chain.txt | Addition followed by move | R3 = 07, R4 = 07; halted |
+| program_17_add_and_move_chain.txt | Addition followed by move | R3 = 07, R4 = 07 after MOVE; halted |
 | program_18_bitwise_chain.txt | OR followed by AND | R3 = F0; halted |
 | program_19_zero_register_branch.txt | Branch when R1 equals R0 | Branch to address 16; R2 remains 00; halt |
-| program_20_combined_operations.txt | Addition, OR, then rotate | R3 = 09 after rotate; R1 = 1F; halted |
+| program_20_combined_operations.txt | Addition, OR, then rotate | R3 = 8F after rotate; R1 = 0F; halted |
 
 ## How to run
 1. Build the complete simulator using the project build command.

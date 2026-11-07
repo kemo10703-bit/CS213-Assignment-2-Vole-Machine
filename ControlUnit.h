@@ -1,7 +1,9 @@
 #ifndef CONTROLUNIT_H
 #define CONTROLUNIT_H
 
+#include <cstdint>
 #include <string>
+
 #include "Types.h"
 #include "Memory.h"
 #include "RegisterFile.h"
@@ -14,7 +16,7 @@ private:
     ALU& alu;
 
     int PC;
-    uint16_t IR;
+    std::uint16_t IR;
     bool halted;
     std::string errorMessage;
 
@@ -22,13 +24,17 @@ private:
 
 public:
     ControlUnit(Memory& mem, RegisterFile& reg, ALU& alu_ref);
-    
+
     void setPC(int startAddress);
-    uint16_t fetch();
-    void decode(uint16_t instruction);
+    std::uint16_t fetch();
+    void decode(std::uint16_t instruction);
     bool validateInstruction();
     void execute();
     void step();
+
+    int getPC() const;
+    bool isHalted() const;
+    const std::string& getErrorMessage() const;
 };
 
 #endif

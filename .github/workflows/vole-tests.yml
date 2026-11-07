@@ -1,0 +1,67 @@
+name: Vole Machine - Run 20 Test Programs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - 'tests/**'
+      - '.github/workflows/vole-tests.yml'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build simulator
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic \
+            ALU.cpp Memory.cpp RegisterFile.cpp ControlUnit.cpp \
+            ProgramLoader.cpp DisplayState.cpp VoleMachine.cpp \
+            mainProject.cpp -o vole
+          
+      - name: Run all test programs and save actual console output
+        shell: bash
+        run: |
+          mkdir -p test-results
+          passed=0
+          failed=0
+          for file in tests/*.txt; do
+            name=$(basename "$file")
+            echo "Running $name"
+            printf '%s\n1\n3\n4\n' "$file" | ./vole > "test-results/${name%.txt}.log" 2>&1
+            status=$?
+            {
+              echo "========================================"
+              echo "TEST: $name"
+              echo "EXIT CODE: $status"
+              echo "========================================"
+              cat "test-results/${name%.txt}.log"
+              echo
+            } >> test-results/ALL_TESTS.txt
+            if [ "$status" -eq 0 ] && grep -q "Program halted after" "test-results/${name%.txt}.log"; then
+              passed=$((passed + 1))
+              echo "PASS (execution reached HALT): $name"
+            else
+              failed=$((failed + 1))
+              echo "FAIL: $name"
+            fi
+          done
+          {
+            echo "Programs executed: $((passed + failed))"
+            echo "Reached HALT: $passed"
+            echo "Failed to load/run to HALT: $failed"
+            echo "Note: reaching HALT is an execution check, not proof that every register/memory value matches the assignment specification."
+          } | tee test-results/SUMMARY.txt
+          test "$failed" -eq 0
+
+      - name: Upload actual run logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vole-machine-test-results
+          path: test-results/
+          if-no-files-found: warn

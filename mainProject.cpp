@@ -1,50 +1,70 @@
 #include <iostream>
+#include <limits>
 #include <string>
+
 #include "VoleMachine.h"
-using namespace std;
-int main()
-{
-    cout << "<========================================>" << endl;
-    cout << "     WELCOME TO VOLE MACHINE SIMULATOR  " << endl;
-    cout << "<========================================>" << endl;
+
+int main() {
     VoleMachine machine;
 
-    string filename;
-    cout << "Enter the program file name (e.g., program.txt) : ";
-    cin >> filename;
+    std::cout << "========================================\n";
+    std::cout << "       VOLE MACHINE SIMULATOR\n";
+    std::cout << "========================================\n";
 
-    machine.loadProgram(filename);
+    std::string fileName;
+    std::cout << "Enter program file name: ";
+    std::cin >> fileName;
 
-    int choice;
+    int startAddress = 0x10;
+    std::cout << "Start address (hex, default 10): ";
+    std::string addressText;
+    std::cin >> addressText;
+
+    try {
+        startAddress = static_cast<int>(std::stoul(addressText, nullptr, 16));
+    } catch (...) {
+        std::cerr << "Invalid address. Using default address 10.\n";
+        startAddress = 0x10;
+    }
+
+    if (!machine.loadProgram(fileName, startAddress)) {
+        return 1;
+    }
+
+    int choice = 0;
     do {
-        cout << "\n--- CHOOSE EXECUTION MODE ---" << endl;
-        cout << "1. Run Program at Once" << endl;
-        cout << "2. Run Step by Step" << endl;
-        cout << "3. Display Machine State" << endl;
-        cout << "4. Exit" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
+        std::cout << "\n--- MENU ---\n";
+        std::cout << "1. Run program\n";
+        std::cout << "2. Execute one instruction\n";
+        std::cout << "3. Display machine state\n";
+        std::cout << "4. Exit\n";
+        std::cout << "Choice: ";
+
+        if (!(std::cin >> choice)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Please enter a number from 1 to 4.\n";
+            continue;
+        }
 
         switch (choice) {
-        case 1:
-            machine.runAtOnce();
-            break;
-        case 2:
-            machine.stepByStep();
-            break;
-        case 3:
-            machine.displayState();
-            break;
-        case 4:
-            cout << "Exiting simulator. Good bye!" << endl;
-            break;
-        default:
-            cout << "Invalid choice! Please try again." << endl;
+            case 1:
+                machine.run();
+                break;
+            case 2:
+                machine.step();
+                machine.displayState();
+                break;
+            case 3:
+                machine.displayState();
+                break;
+            case 4:
+                std::cout << "Exiting simulator.\n";
+                break;
+            default:
+                std::cout << "Invalid choice.\n";
         }
     } while (choice != 4);
 
     return 0;
 }
-
-
-

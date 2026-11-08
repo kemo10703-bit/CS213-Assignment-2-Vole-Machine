@@ -21,7 +21,7 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -pedantic \
             ALU.cpp Memory.cpp RegisterFile.cpp ControlUnit.cpp \
             ProgramLoader.cpp DisplayState.cpp VoleMachine.cpp \
-            mainProject.cpp -o vole
+            A2-S3_S4-20250490_20251304_20240454_20240330.cpp -o vole
           
       - name: Run all test programs and save actual console output
         shell: bash

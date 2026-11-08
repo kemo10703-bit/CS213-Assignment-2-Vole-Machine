@@ -4,7 +4,7 @@
 Compile the project with C++17:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -pedantic ALU.cpp Memory.cpp RegisterFile.cpp ControlUnit.cpp ProgramLoader.cpp DisplayState.cpp VoleMachine.cpp mainProject.cpp main.cpp -o vole
+g++ -std=c++17 -Wall -Wextra -pedantic ALU.cpp Memory.cpp RegisterFile.cpp ControlUnit.cpp ProgramLoader.cpp DisplayState.cpp VoleMachine.cpp A2-S3_S4-20250490_20251304_20240454_20240330.cpp main.cpp -o vole
 ```
 
 Run `./vole` (or `vole.exe` on Windows).
@@ -30,7 +30,7 @@ This example loads 05 into R1, 07 into R2, adds R1 and R2 into R3, then halts.
 - The loader validates hexadecimal instruction formatting and available memory before writing the program.
 - ControlUnit implements opcodes 1 through C using the current team ALU interface.
 - The simulator stops after 10,000 instructions as a safeguard against an accidental infinite loop.
-- `main.cpp` is an optional Memory/RegisterFile smoke test. Define `VOLE_COMPONENT_TEST_MAIN` to build it as the entry point; the normal simulator entry point is `mainProject.cpp`.
+- `main.cpp` is an optional Memory/RegisterFile smoke test. Define `VOLE_COMPONENT_TEST_MAIN` to build it as the entry point; the normal simulator entry point is `A2-S3_S4-20250490_20251304_20240454_20240330.cpp`.
 
 ## Before final submission
 Check the exact assignment handout for the required program-file format, start address, opcode semantics, and output behavior. In particular, confirm the course's 8-bit floating-point representation used by opcode 6; the ALU implementation is retained from the team's submitted version and has not been independently validated against an instructor test set.
